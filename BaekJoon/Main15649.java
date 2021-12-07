@@ -3,64 +3,44 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-
 public class Main15649 {
 	
-	public static int N, M;
-	public static int[] selected, used; 
-	public static StringBuilder sb = new StringBuilder();
+	static int N;
+	static int M;
 	
-	public static void rec_func(int k){
-		if(k == M + 1){ //다 골랐을때
-			//selected[1...M] 배열이 새롭게 탐색된 결과
-			for(int i=1;i <=M; i++) {
-				sb.append(selected[i]).append(' ');
-			}
-			sb.append('\n');
-		}else{
-			// 1~N 까지를 k번 원소로 한번씩 정하고
-			// 매번 k+1 번부터 M번 원소로 재귀호출 해주기
-			for(int cand = 1; cand <= N; cand++){
-				if(used[cand] == 1) continue;  //이미 넣은 값인지 검사를 해준다.
-				
-				//k번째에 cand가 올 수 있으면
-				selected[k] = cand;
-				used[cand]  = 1;
-				
-				rec_func(k+1);
-				
-				selected[k] = 0;
-				used[cand] = 0;
-			}
-		}
-	}
-	
+	static int[] arr = new int[10];
+	static boolean[] check = new boolean[10];
+	static StringBuilder sb = new StringBuilder();
 
 	public static void main(String[] args) throws IOException{
+		
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		N = Integer.parseInt(st.nextToken()); // 1~N 까지4
-		M = Integer.parseInt(st.nextToken()); // M개를 고른 수열 
-		selected = new int[M+1]; //결과 수열
-		used = new int[N+1];
-		rec_func(1);
-		System.out.println(sb.toString());
-		
+		N = Integer.parseInt(st.nextToken()); // 1~N지 자연수 중 
+		M = Integer.parseInt(st.nextToken()); // 중복없이 M개를 고른 수열 
+		func(0);
+		System.out.println(sb);
+
 	}
 	
-}
-
-//시간복잡도 부족 
-/*	boolean isUsed = false;
-	for(int i=1; i<k; i++){
-		if (cand == selected[i]){ //사용된적이 있는지 체크
-			isUsed = true;
+	static void func(int k) { //현재까지 k개의 수를 택하였다.
+		if(k == M) { //m개를 모두 택했으면 
+			for(int i=0; i<M; i++) {
+				sb.append(arr[i]).append(' ');
+			}
+			sb.append('\n');
+			return;
 		}
+		
+		for(int i=1; i<=N; i++) { //1부터 N까지의 수에 대해	
+			if(!check[i]) { //i가 사용되지 않았다면
+				arr[k] = i; //k번쨰 수를 i로 정함
+				check[i] = true; // i를 사용했다고 표시
+				func(k+1); //다음 수를 정함
+				check[i] = false; //i를 사용해서 확인했으니 다시 사용되지 않았다고 명시
+			}
+		}
+		
 	}
-	//k번째에 cand가 올 수 있다면
-	if(!isUsed){
-		selected[k] = cand;
-		//k+1 번 ~ M번을 모두 탐색하는 일을 해야하는 상황
-		rec_func(k+1);
-		selected[k] = 0; 
-	}*/
+
+}
