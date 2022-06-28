@@ -1,42 +1,34 @@
+package baekjoon.DP;
+
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-
 public class Main1912 {
 
-	public static void main(String[] args) throws IOException{
+	static int N;
+	static int[] A;
+	static int[] D;
+
+	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		
-		int N = Integer.parseInt(br.readLine()); //수열 갯수
+		N = Integer.parseInt(br.readLine());
+		A = new int[N + 1];
+		D = new int[N + 1];
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		int[] A = new int[N]; //수열
-		int[] D = new int[N]; //최대길이 수열
-		
-		for(int i=0; i<N; i++){
+		for (int i = 1; i <= N; i++) {
 			A[i] = Integer.parseInt(st.nextToken());
 		}
-		
-		//점화식 
-		//D[i] = max(D[i-1] + A[i] , D[i]) 
-		
-		for(int i=0; i<N; i++){
-			D[i] = A[i]; //연속하지 않은 경우
-			if(i == 0 ) continue;
-			if(D[i] < D[i-1] + A[i]){ //연속하는 경우
-				D[i] = D[i-1] + A[i];
-			}
+		int max = D[1] = A[1];
+		for (int i = 2; i <= N; i++) {
+			D[i] = Math.max(D[i - 1] + A[i], A[i]);
+			max = Math.max(D[i], max);
 		}
-		
-		int ans = A[0];
-		for(int i=0; i<N; i++){
-			if(ans < D[i]){
-				ans = D[i];
-			}
-		}
-		System.out.println(ans);
-		
+		System.out.println(max);
+
 	}
+
+	//D[N] = N개의 정수로 이루어진 임의의 수열 중 연속된 수 중 가장 큰 합
+	//D[N-1] =
 
 }
