@@ -1,31 +1,38 @@
+package baekjoon.DP;
+
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.StringTokenizer;
 
-
 public class Main11052 {
-	
-	public static int[] d;
 
-	public static void main(String[] args) throws IOException {
+	static int N;
+	static int[] P, D;
+
+	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int N = Integer.parseInt(br.readLine()); //카드개수 N개
-		int[] P = new int[N+1]; //가격 
-		d = new int[N+1]; //메모리제이션 
-		
+		N = Integer.parseInt(br.readLine());
+		P = new int[N + 1];
+		D = new int[N + 1];
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		for(int i=1; i<=N; i++){
+		for (int i = 1; i <= N; i++) {
 			P[i] = Integer.parseInt(st.nextToken());
 		}
-		
-		//점화식 : D[N] = max(D[N], D[N-i]+P[i])
-		for(int i=1; i<=N; i++){
-			for(int j=1; j<=i; j++){
-				d[i] = Math.max(d[i], d[i-j] + P[j]);
+		go();
+		System.out.println(D[N]);
+	}
+
+	//D[N] = 카드 N개를 구매하는 비용의 최대값
+	//D[N] = max(D[N-i] + P[i])
+	// 1 <=i <=N
+	// N x O(N) = O(N^2)
+
+	static void go() {
+		for (int i = 1; i <= N; i++) {
+			for (int j = 1; j <= i; j++) {
+				D[i] = Math.max(D[i], D[i - j] + P[j]);
 			}
 		}
-		System.out.println(d[N]);
 	}
 
 }
