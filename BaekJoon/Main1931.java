@@ -1,50 +1,48 @@
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.StringTokenizer;
+package baekjoon.그리디;
 
+import java.util.*;
+import java.io.*;
 
-public class Main1931 {
+class Main1931 {
 
-	public static void main(String[] args) throws IOException{
+	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		int N = Integer.parseInt(br.readLine()); //회의 수 N 
-		int[][] time = new int[N][2];
-		// time[][0] = 시작시간
-		// time[][1] = 종료시간
-		
-		for(int i=0; i<N; i++){
-			StringTokenizer st = new StringTokenizer(br.readLine());
-			time[i][0] = Integer.parseInt(st.nextToken());
-			time[i][1] = Integer.parseInt(st.nextToken());
+		StringTokenizer st;
+		int N = Integer.parseInt(br.readLine());
+		PriorityQueue<Pair> pq = new PriorityQueue<>();
+		for (int i = 0; i < N; i++) {
+			st = new StringTokenizer(br.readLine());
+			pq.add(new Pair(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken())));
 		}
-		
-		Arrays.sort(time, new Comparator<int[]>() {
-			@Override
-			public int compare(int[] o1, int[] o2) {
-				
-				if(o1[1] == o2[1]){ //종료시간이 같으면
-					return o1[0] - o2[0]; //시작시간이 빠른순으로 정렬
-				}
-				return o1[1] - o2[1];
-			}
-		});
-		
-		int cnt = 0;
 		int endTime = 0;
-		
-		for(int i=0; i<N; i++){
-			
-			//종료시간이 다음 회의 시작 시간보다 작거나 같으면 갱신
-			if(endTime <= time[i][0]){
-				endTime = time[i][1];
-				cnt ++;
+		int ans = 0;
+		while (!pq.isEmpty()) {
+			Pair p = pq.poll();
+			if (endTime <= p.s) {
+				endTime = p.f;
+				ans++;
 			}
 		}
-		System.out.println(cnt);
-		
+		System.out.println(ans);
+
 	}
 
+	private static class Pair implements Comparable<Pair> {
+		int s, f;
+
+		public Pair(int start, int finish) {
+			this.s = start;
+			this.f = finish;
+		}
+
+		public int compareTo(Pair o1) {
+			if (this.f == o1.f) {
+				return this.s - o1.s;
+			}
+			return this.f - o1.f;
+		}
+	}
 }
+
+
+
