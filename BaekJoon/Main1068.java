@@ -1,3 +1,4 @@
+package baekjoon.트리;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -5,55 +6,57 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-public class Main1068 {
-	
-	public static ArrayList<ArrayList<Integer>> graph;
-	public static int N, remove, cnt, root;
-	
-	public static void main(String[] args) throws IOException {
-		
+class Main1068 {
+
+	static int[] leaf;
+	static int N, R, root;
+	static ArrayList<Integer>[] g;
+
+	public static void main(String[] args) throws Exception {
+		input();
+		go();
+	}
+
+	private static void go() {
+		for (int i = 0; i < N; i++) {
+			if (g[i].contains(R)) {
+				g[i].remove(g[i].indexOf(R));
+			}
+		}
+		if (root != R) {
+			dfs(root);
+		}
+		System.out.println(leaf[root]);
+	}
+
+	private static void dfs(int x) {
+		if (g[x].isEmpty()) {
+			leaf[x] = 1;
+		}
+		for (int y : g[x]) {
+			dfs(y);
+			leaf[x] += leaf[y];
+		}
+	}
+
+	private static void input() throws IOException {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		N = Integer.parseInt(br.readLine()); 
-		
-		StringTokenizer st = new StringTokenizer(br.readLine());
-		
-		graph = new ArrayList<ArrayList<Integer>>();
-		
-		for(int i=0; i<N; i++) {
-			graph.add(new ArrayList<Integer>());
+		StringTokenizer st;
+		N = Integer.parseInt(br.readLine());
+		g = new ArrayList[N];
+		leaf = new int[N];
+		for (int i = 0; i < N; i++) {
+			g[i] = new ArrayList<>();
 		}
-		
-		for(int i=0; i<N; i++) {
-			int parent = Integer.parseInt(st.nextToken());
-			if(parent == -1) root = i;
-			else graph.get(parent).add(i); 
+		st = new StringTokenizer(br.readLine());
+		for (int i = 0; i < N; i++) {
+			int a = Integer.parseInt(st.nextToken());
+			if (a == -1) {
+				root = i;
+				continue;
+			}
+			g[a].add(i);
 		}
-		
-		remove = Integer.parseInt(br.readLine()); 
-		if(remove == root) {
-			System.out.println("0");
-			return;
-		}
-		
-		System.out.println(dfs(root));
-		
-		
+		R = Integer.parseInt(br.readLine());
 	}
-	
-	public static int dfs(int here) {
-		int cnt = 0;
-		int child = 0;
-
-		for(int i=0; i<graph.get(here).size(); i++) {
-			int there = graph.get(here).get(i);
-			if(there == remove) continue;
-			cnt += dfs(there);
-			child++;
-		}
-
-		if(child == 0) return 1;
-		return cnt;
-	}
-	
-	
 }
