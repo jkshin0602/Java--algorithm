@@ -1,26 +1,32 @@
-package baekjoon.그리디;
+package baekjoon.ready;
 
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.Arrays;
+import java.util.StringTokenizer;
 
 class Main11399 {
 
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st;
+
 		int N = Integer.parseInt(br.readLine());
-		int[] A = new int[N + 1];
-		st = new StringTokenizer(br.readLine());
-		PriorityQueue<Integer> pq = new PriorityQueue<>();
-		for (int i = 1; i <= N; i++) {
-			pq.add(Integer.parseInt(st.nextToken()));
+		int[] P = new int[N];
+
+		StringTokenizer st = new StringTokenizer(br.readLine());
+		for (int i = 0; i < N; i++) {
+			P[i] = Integer.parseInt(st.nextToken());
 		}
-		int tmp = 0;
-		int ans = 0;
-		while (!pq.isEmpty()) {
-			tmp += pq.poll();
-			ans += tmp;
+
+		Arrays.sort(P);
+
+		int answer = P[0];
+
+		for (int i = 1; i < N; i++) {
+			P[i] = P[i - 1] + P[i];
+			answer += P[i];
 		}
-		System.out.println(ans);
+
+		System.out.println(answer);
 	}
 }
