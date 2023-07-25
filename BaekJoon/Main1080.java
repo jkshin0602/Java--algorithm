@@ -1,4 +1,4 @@
-package baekjoon.그리디;
+package baekjoon.ready;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -6,72 +6,77 @@ import java.util.StringTokenizer;
 
 class Main1080 {
 
-	static int[][] A, B;
-	static int N, M;
-
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		StringTokenizer st = new StringTokenizer(br.readLine());
-		N = Integer.parseInt(st.nextToken());
-		M = Integer.parseInt(st.nextToken());
 
-		A = new int[N][M];
-		B = new int[N][M];
+		int N = Integer.parseInt(st.nextToken());
+		int M = Integer.parseInt(st.nextToken());
+
+		int[][] map = new int[N][M];
+		int[][] object = new int[N][M];
 
 		for (int i = 0; i < N; i++) {
-			String s = br.readLine();
+			String input = br.readLine();
 			for (int j = 0; j < M; j++) {
-				A[i][j] = s.charAt(j) + '0';
-			}
-		}
-		for (int i = 0; i < N; i++) {
-			String s = br.readLine();
-			for (int j = 0; j < M; j++) {
-				B[i][j] = s.charAt(j) + '0';
+				map[i][j] = input.charAt(j) - '0';
 			}
 		}
 
-		System.out.println(get());
+		for (int i = 0; i < N; i++) {
+			String input = br.readLine();
+			for (int j = 0; j < M; j++) {
+				object[i][j] = input.charAt(j) - '0';
+			}
+		}
 
+		int answer = go(N, M, map, object);
+		System.out.println(answer);
 	}
 
-	static int get() {
+	private static int go(int N, int M, int[][] map, int[][] object) {
 		int ans = 0;
 
-		if (check())
+		if (check(map, object)) {
 			return 0;
-		if (N < 3 || M < 3)
+		}
+
+		if (N < 3 || M < 3) {
 			return -1;
+		}
 
 		for (int i = 0; i < N - 2; i++) {
 			for (int j = 0; j < M - 2; j++) {
-				if (A[i][j] != B[i][j]) {
-					go(j, i);
+				if (map[i][j] != object[i][j]) {
+					reverse(j, i, map);
 					ans++;
 				}
-				if (check()) {
+				if (check(map, object)) {
 					return ans;
 				}
 			}
 		}
+
 		return -1;
 	}
 
-	static void go(int x, int y) {
+	private static void reverse(int x, int y, int[][] map) {
 		for (int i = y; i < y + 3; i++) {
 			for (int j = x; j < x + 3; j++) {
-				A[i][j] ^= 1;
+				map[i][j] ^= 1;
 			}
 		}
 	}
 
-	static boolean check() {
-		for (int i = 0; i < N; i++) {
-			for (int j = 0; j < M; j++) {
-				if (A[i][j] != B[i][j])
+	private static boolean check(int[][] map, int[][] object) {
+		for (int i = 0; i < map.length; i++) {
+			for (int j = 0; j < map[0].length; j++) {
+				if (map[i][j] != object[i][j]) {
 					return false;
+				}
 			}
 		}
+
 		return true;
 	}
 }
