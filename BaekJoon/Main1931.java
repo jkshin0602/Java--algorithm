@@ -1,48 +1,54 @@
-package baekjoon.그리디;
+package baekjoon.ready;
 
-import java.util.*;
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.util.PriorityQueue;
+import java.util.StringTokenizer;
 
 class Main1931 {
 
 	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
-		StringTokenizer st;
 		int N = Integer.parseInt(br.readLine());
+
 		PriorityQueue<Pair> pq = new PriorityQueue<>();
 		for (int i = 0; i < N; i++) {
-			st = new StringTokenizer(br.readLine());
-			pq.add(new Pair(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken())));
+			StringTokenizer st = new StringTokenizer(br.readLine());
+			int start = Integer.parseInt(st.nextToken());
+			int end = Integer.parseInt(st.nextToken());
+
+			pq.add(new Pair(start, end));
 		}
+
 		int endTime = 0;
-		int ans = 0;
+		int answer = 0;
+
 		while (!pq.isEmpty()) {
 			Pair p = pq.poll();
-			if (endTime <= p.s) {
-				endTime = p.f;
-				ans++;
+			if (endTime <= p.start) {
+				endTime = p.end;
+				answer++;
 			}
 		}
-		System.out.println(ans);
 
+		System.out.println(answer);
 	}
 
 	private static class Pair implements Comparable<Pair> {
-		int s, f;
+		int start, end;
 
-		public Pair(int start, int finish) {
-			this.s = start;
-			this.f = finish;
+		public Pair(int start, int end) {
+			this.start = start;
+			this.end = end;
 		}
 
-		public int compareTo(Pair o1) {
-			if (this.f == o1.f) {
-				return this.s - o1.s;
+		@Override
+		public int compareTo(Pair o) {
+			if (this.end == o.end) {
+				return this.start - o.start;
 			}
-			return this.f - o1.f;
+
+			return this.end - o.end;
 		}
 	}
 }
-
-
-
