@@ -1,35 +1,30 @@
-package baekjoon.그리디;
+package baekjoon.ready;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.util.*;
+import java.util.PriorityQueue;
 
-public class Main1715 {
+class Main1715 {
 
 	public static void main(String[] args) throws Exception {
-
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int N = Integer.parseInt(br.readLine());
-		PriorityQueue<Integer> q = new PriorityQueue<>();
+
+		PriorityQueue<Integer> pq = new PriorityQueue<>();
+
 		for (int i = 0; i < N; i++) {
-			q.add(Integer.parseInt(br.readLine()));
-		}
-		if (N == 1) {
-			System.out.println(0);
-			return;
-		}
-		int ans = 0;
-		while (true) {
-			int a = q.poll() + q.poll();
-			ans += a;
-			q.add(a);
-			if (q.size() == 1) {
-				break;
-			}
+			int input = Integer.parseInt(br.readLine());
+			pq.add(input);
 		}
 
-		System.out.println(ans);
+		int answer = 0;
+		while (pq.size() > 1) {
+			Integer x1 = pq.poll();
+			Integer x2 = pq.poll();
+			answer += x1 + x2;
+			pq.add(x1 + x2);
+		}
 
+		System.out.println(answer);
 	}
-
 }
