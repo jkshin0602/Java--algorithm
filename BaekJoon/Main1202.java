@@ -1,9 +1,9 @@
-package baekjoon.그리디;
+package baekjoon.ready;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
@@ -16,45 +16,54 @@ class Main1202 {
 		StringTokenizer st = new StringTokenizer(br.readLine());
 		int N = Integer.parseInt(st.nextToken());
 		int K = Integer.parseInt(st.nextToken());
-		List<Jewel> j = new ArrayList<>();
+
+		List<Jewel> jewels = new ArrayList<>();
+
 		for (int i = 0; i < N; i++) {
 			st = new StringTokenizer(br.readLine());
-			j.add(new Jewel(Integer.parseInt(st.nextToken()), Integer.parseInt(st.nextToken())));
+			int weight = Integer.parseInt(st.nextToken());
+			int value = Integer.parseInt(st.nextToken());
+			jewels.add(new Jewel(weight, value));
 		}
-		j.sort((o1, o2) -> {
-			if (o1.m == o2.m) {
-				return o2.v - o1.v;
+
+		jewels.sort((o1, o2) -> {
+			if (o1.weight == o2.weight) {
+				return o2.value - o1.value;
 			}
-			return o1.m - o2.m;
+			return o1.weight - o2.weight;
 		});
-		int[] b = new int[K];
+
+		List<Integer> bags = new ArrayList<>();
 		for (int i = 0; i < K; i++) {
-			b[i] = Integer.parseInt(br.readLine());
+			int volume = Integer.parseInt(br.readLine());
+			bags.add(volume);
 		}
-		Arrays.sort(b);
+
+		Collections.sort(bags);
 
 		PriorityQueue<Integer> pq = new PriorityQueue<>(Comparator.reverseOrder());
-		long ans = 0;
-		int idx = 0;
-		for (int i = 0; i < K; i++) {
-			while (idx < N && j.get(idx).m <= b[i]) {
-				pq.add(j.get(idx++).v);
+		long answer = 0;
+
+		for (int i = 0, j = 0; i < K; i++) {
+			while (j < N && jewels.get(j).weight <= bags.get(i)) {
+				pq.add(jewels.get(j++).value);
 			}
+
 			if (!pq.isEmpty()) {
-				ans += pq.poll();
+				answer += pq.poll();
 			}
 		}
 
-		System.out.println(ans);
+		System.out.println(answer);
 	}
 
 	private static class Jewel {
-		int m, v;
+		int weight;
+		int value;
 
-		public Jewel(int m, int v) {
-			this.m = m;
-			this.v = v;
+		public Jewel(int weight, int value) {
+			this.weight = weight;
+			this.value = value;
 		}
 	}
-
 }
