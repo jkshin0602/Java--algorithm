@@ -1,31 +1,28 @@
+package baekjoon.ready;
+
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Main2231 {
+class Main2231 {
 
-	public static void main(String[] args) throws IOException {
-		
-		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));		
-		
+	public static void main(String[] args) throws Exception {
+		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int N = Integer.parseInt(br.readLine());
-		
-		for(int i=1; i<=1_000_000; i++) {
-			int sum = i;
-			
-			String s = i+"";
-			for(int j=0; j<s.length(); j++) {
-				sum += s.charAt(j) - '0';
+
+		int min = Integer.MAX_VALUE;
+		for (int i = 1; i < N; i++) {
+			String m = String.valueOf(i);
+			int sum = Integer.parseInt(m);
+
+			for (int j = 0; j < m.length(); j++) {
+				sum += m.charAt(j) - '0';
 			}
-			
-			if(sum == N) {
-				System.out.println(i);
-				System.exit(0);
+
+			if (sum == N) {
+				min = Math.min(Integer.parseInt(m), min);
 			}
 		}
-		System.out.println(0);
-		
-		
-	}
 
+		System.out.println(min != Integer.MAX_VALUE ? min : 0);
+	}
 }
