@@ -1,34 +1,22 @@
+package baekjoon.ready;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStreamReader;
 
-public class Main1436 {
+class Main1436 {
 
-
-	
-	public static void main(String[] args) throws IOException {
-		
+	public static void main(String[] args) throws Exception {
 		BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 		int N = Integer.parseInt(br.readLine());
-		
-		
-		for(int i=666;;i++) {
-			String s = i+"";
-			if(s.contains("666")) {
+		for (int i = 666; ; i++) {
+			if (String.valueOf(i).contains("666")) {
 				N--;
 			}
-			if(N == 0) {
+			if (N == 0) {
 				System.out.println(i);
 				break;
 			}
 		}
-		
-	}
-	
-	
-	
 
-	
-	
+	}
 }
